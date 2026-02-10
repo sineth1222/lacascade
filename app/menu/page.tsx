@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   Utensils,
@@ -175,7 +175,7 @@ const categories = [
   { id: "desserts", label: "Desserts", icon: <CakeSlice size={20} /> },
 ];
 
-export default function MenuPage() {
+function MenuContent() {
   const searchParams = useSearchParams();
   const categoryFromUrl = searchParams.get("category");
 
@@ -344,5 +344,20 @@ export default function MenuPage() {
         </div>*/}
       </div>
     </main>
+  );
+}
+
+// Main exported component with Suspense boundary
+export default function MenuPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-black flex items-center justify-center">
+          <p className="text-gold text-2xl">Loading menu...</p>
+        </div>
+      }
+    >
+      <MenuContent />
+    </Suspense>
   );
 }
